@@ -10,7 +10,7 @@ import { Input } from '@/components/ui/input';
 import { PlusCircle, RefreshCw, Copy, Check, Upload, Settings, Download } from 'lucide-react';
 import { useToast } from "@/components/ui/use-toast"
 import { FaTimes } from 'react-icons/fa';
-import { Jersey, rubik } from './styles/fonts';
+import { Jersey } from './styles/fonts';
 
 interface Message {
   id: number;
