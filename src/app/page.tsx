@@ -385,7 +385,7 @@ const TextConverter: React.FC = () => {
   return (
     <div className="min-h-screen py-12 px-4 sm:px-6 lg:px-8 bg-gray-100">
       <div className="max-w-4xl mx-auto">
-        <h1 className={`${Jersey.className} text-6xl font-bold mb-8 text-center text-black shadow-text`}>OpenAI Fine-tuning file Creator</h1>
+        <h1 className={`${Jersey.className} text-6xl font-bold mb-8 text-center text-black shadow-text`}>ChatGPT 4o Fine-tuning file Creator</h1>
         <div className="flex justify-end mb-6">
           <TemplateDialog onSave={handleSaveTemplate} />
         </div>
