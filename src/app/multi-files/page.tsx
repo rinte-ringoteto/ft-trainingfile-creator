@@ -2,12 +2,11 @@
 import React, { useState } from 'react';
 import { FileUploader } from "react-drag-drop-files";
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
 import { Jersey } from '../styles/fonts';
 import Link from 'next/link';
+import { Input } from '@/components/ui/input';
 
 interface ProcessedFile {
     name: string;
@@ -154,14 +153,11 @@ const FileUploadSPA: React.FC = () => {
 
             {processedFiles.length > 0 && (
                 <Card>
-                    <CardHeader>
-                        <CardTitle>処理結果</CardTitle>
-                    </CardHeader>
                     <CardContent>
-                        <div className="grid grid-cols-2 gap-4 mb-6">
+                        <div className="grid grid-cols-2 gap-4 my-4">
                             <div>
                                 <Label htmlFor="commonSystem">Common System</Label>
-                                <Textarea
+                                <Input
                                     id="commonSystem"
                                     value={commonSystem}
                                     onChange={(e) => handleCommonInputChange('system', e.target.value)}
@@ -170,7 +166,7 @@ const FileUploadSPA: React.FC = () => {
                             </div>
                             <div>
                                 <Label htmlFor="commonUser">Common User</Label>
-                                <Textarea
+                                <Input
                                     id="commonUser"
                                     value={commonUser}
                                     onChange={(e) => handleCommonInputChange('user', e.target.value)}
@@ -189,17 +185,17 @@ const FileUploadSPA: React.FC = () => {
                         {processedFiles.map((file, index) => (
                             <div key={index} className="grid grid-cols-[40px_1fr_1fr_1fr] gap-4 items-center mb-4">
                                 <div className="text-right font-semibold">{index + 1}</div>
-                                <Textarea
+                                <Input
                                     value={file.system}
                                     onChange={(e) => handleInputChange(index, 'system', e.target.value)}
                                     className="w-full"
                                 />
-                                <Textarea
+                                <Input
                                     value={file.user}
                                     onChange={(e) => handleInputChange(index, 'user', e.target.value)}
                                     className="w-full"
                                 />
-                                <div className="p-2 bg-gray-100 rounded h-[80px] overflow-y-auto">
+                                <div className="p-2 bg-gray-100 rounded h-[40px] overflow-y-auto">
                                     {file.name}
                                 </div>
                             </div>
