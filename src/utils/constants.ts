@@ -1,0 +1,1 @@
+export const MAX_CHAR_COUNT = 65536;
