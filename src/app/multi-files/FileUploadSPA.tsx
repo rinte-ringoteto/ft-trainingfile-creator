@@ -7,7 +7,6 @@ import { Label } from "@/components/ui/label"
 import { Jersey } from '@/app/styles/fonts';
 import Link from 'next/link';
 import { Input } from '@/components/ui/input';
-import { FaTimes } from 'react-icons/fa';
 import { useFileProcessing } from '@/hooks/useFileProcessing';
 import { TokenSummary } from '@/components/TokenSummary';
 import { MAX_CHAR_COUNT } from '@/utils/constants';
