@@ -18,7 +18,6 @@ export const useFileProcessing = () => {
     const [filesWithTokens, setFilesWithTokens] = useState<ProcessedFile[]>([]);
 
     const handleChange = (uploadedFiles: any): void => {
-        console.log('Received files:', uploadedFiles);
         setError(null);
 
         let fileArray: File[];
@@ -37,7 +36,6 @@ export const useFileProcessing = () => {
             return;
         }
 
-        console.log('Processed file array:', fileArray);
         setFiles(fileArray);
         processFiles(fileArray);
     };
@@ -74,7 +72,8 @@ export const useFileProcessing = () => {
                 });
             }).join('\n');
 
-            const response = await fetch('http://localhost:8000/token-analysis', {
+            const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+            const response = await fetch(`${apiUrl}/token-analysis`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
