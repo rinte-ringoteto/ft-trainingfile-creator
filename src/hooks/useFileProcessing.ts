@@ -70,34 +70,58 @@ export const useFileProcessing = () => {
                         { role: "assistant", content: escapeQuotes(file.content.replace(/\n/g, ' ')) }
                     ]
                 });
-            }).join('\n');
-
-            const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
-            const response = await fetch(`${apiUrl}/token-analysis`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ jsonl_data: jsonlData }),
             });
 
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
+            const chunkSize = 4 * 1024 * 1024; // 4MB
+            const chunks = [];
+            let currentChunk = '';
+
+            for (const line of jsonlData) {
+                if (currentChunk.length + line.length + 1 > chunkSize) {
+                    chunks.push(currentChunk);
+                    currentChunk = line;
+                } else {
+                    currentChunk += (currentChunk ? '\n' : '') + line;
+                }
+            }
+            if (currentChunk) {
+                chunks.push(currentChunk);
             }
 
-            const data = await response.json();
+            const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+            let allTokenCounts: any = [];
+            let totalTokens = 0;
 
-            if (!data.token_distribution || !Array.isArray(data.token_distribution.individual_counts)) {
-                throw new Error('Unexpected response format from server');
+            for (const chunk of chunks) {
+                const response = await fetch(`${apiUrl}/token-analysis`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ jsonl_data: chunk }),
+                });
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                const data = await response.json();
+
+                if (!data.token_distribution || !Array.isArray(data.token_distribution.individual_counts)) {
+                    throw new Error('Unexpected response format from server');
+                }
+
+                allTokenCounts = [...allTokenCounts, ...data.token_distribution.individual_counts];
+                totalTokens += data.token_distribution.total;
             }
 
             const updatedFiles = files.map((file, index) => ({
                 ...file,
-                tokenCount: data.token_distribution.individual_counts[index],
+                tokenCount: allTokenCounts[index],
             }));
 
             setFilesWithTokens(updatedFiles);
-            setTotalTokens(data.token_distribution.total);
+            setTotalTokens(totalTokens);
             setOverThresholdFiles(updatedFiles
                 .filter(file => file.tokenCount && file.tokenCount > MAX_CHAR_COUNT)
                 .map(file => file.name));
