@@ -53,7 +53,7 @@ const FileUploadSPA: React.FC = () => {
                     {error && <p className="text-red-500 mt-4">{error}</p>}
                     <div className="flex justify-between mt-4">
                         <Button onClick={convertToJSONL} className="w-1/2 mr-2">
-                            フォーマットチェックと変換
+                            Check & Download
                         </Button>
                         <Button onClick={() => calculateTokens()} className="w-1/2 ml-2" disabled={isLoading}>
                             {isLoading ? 'Loading...' : 'トークン数計算'}
