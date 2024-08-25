@@ -1,3 +1,4 @@
+"use client"
 import { useState } from 'react';
 import { escapeQuotes, readFileContent } from '@/utils/utils';
 import { checkFormat } from '@/utils/formatChecker';
